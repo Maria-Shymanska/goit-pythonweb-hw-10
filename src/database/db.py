@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-from src.conf.config import config
+from src.conf.config import settings
 
 
 class DatabaseSessionManager:
@@ -24,14 +24,14 @@ class DatabaseSessionManager:
         session = self._session_maker()
         try:
             yield session
-        except SQLAlchemyError as e:
+        except SQLAlchemyError:
             await session.rollback()
             raise  # Re-raise the original error
         finally:
             await session.close()
 
 
-sessionmanager = DatabaseSessionManager(config.DB_URL)
+sessionmanager = DatabaseSessionManager(settings.DB_URL)
 
 
 async def get_db():

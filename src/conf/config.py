@@ -1,12 +1,26 @@
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-class Config:
-    JWT_SECRET = 1234567890
-    JWT_ALGORITHM = "HS256"
-    JWT_EXPIRATION_SECONDS = 3600
+from pydantic import EmailStr
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Optional
 
 
-config = Config()
+class Settings(BaseSettings):
+    MAIL_USERNAME: Optional[EmailStr] = None
+    MAIL_PASSWORD: Optional[str] = None
+    MAIL_FROM: Optional[EmailStr] = None
+    MAIL_SERVER: Optional[str] = None
+    MAIL_PORT: Optional[int] = None
+    MAIL_SSL_TLS: Optional[bool] = None
+    DB_URL: Optional[str] = None
+    JWT_SECRET: Optional[str] = None
+    JWT_ALGORITHM: Optional[str] = None
+    JWT_EXPIRATION_SECONDS: Optional[int] = None
+    CLOUDINARY_NAME: Optional[str] = None
+    CLOUDINARY_API_KEY: Optional[int] = None
+    CLOUDINARY_API_SECRET: Optional[str] = None
+
+    model_config = SettingsConfigDict(
+        extra="ignore", env_file=".env", env_file_encoding="utf-8", case_sensitive=True
+    )
+
+
+settings = Settings()
